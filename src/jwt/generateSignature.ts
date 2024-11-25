@@ -1,9 +1,9 @@
 import { createHmac } from "crypto";
 
 interface IGenerateSignature {
-  secret: string,
-  header: string,
-  payload: string,
+  secret: string;
+  header: string;
+  payload: string;
 }
 
 export function generateSignature({

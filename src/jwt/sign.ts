@@ -1,4 +1,3 @@
-import { createHmac } from "node:crypto";
 import { generateSignature } from "./generateSignature";
 
 interface ISignOptions {
@@ -37,5 +36,5 @@ export function sign({ data, exp, secret}: ISignOptions) {
     secret,
   })
 
-  return `${base64EncodedHeader}. ${base64EncodedPayload}.${signature}`
+  return `${base64EncodedHeader}.${base64EncodedPayload}.${signature}`
 }

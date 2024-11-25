@@ -1,14 +1,12 @@
 import { generateSignature } from "./generateSignature";
 
 interface IVerifyOptions {
-  token: string,
-  secret: string,
+  token: string;
+  secret: string;
 };
 
 export function verify({ token, secret }: IVerifyOptions) {
   const [headerSent, payloadSent, signatureSent] = token.split('.');
-
-  console.log({headerSent, payloadSent, signatureSent})
 
   const signature = generateSignature({
     header: headerSent,
@@ -19,6 +17,17 @@ export function verify({ token, secret }: IVerifyOptions) {
   if (signature !== signatureSent) {
     throw new Error('Invalid JWT token')
   }
+// Verify expiration
 
-  console.log('token OK')
-}
+  const decodedPayload = JSON.parse(
+    Buffer
+      .from(payloadSent, 'base64url')
+      .toString('utf-8')
+    );
+
+    if (decodedPayload.exp < Date.now()) {
+      throw new Error('Expired token');
+    }
+
+    return decodedPayload;
+  }
